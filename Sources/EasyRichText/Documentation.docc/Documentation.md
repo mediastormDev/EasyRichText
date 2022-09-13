@@ -8,7 +8,7 @@ A simple library & format for simple rich text.
 
 ## Topics
 
-### `Codable` Model
+### Codable Models
 
 - ``ERTTextSegment``
 - ``ERTRichText``
