@@ -12,8 +12,8 @@ import Foundation
 /// ```json
 /// [
 ///     { "t": "Hello, " },
-///     { "t": "world", "s": ["st"], c: "rd" },
-///     { "t": "rich text", "s": ["bd"], c: "gr" },
+///     { "t": "world", "s": ["st"], "c": "rd" },
+///     { "t": "rich text", "s": ["bd"], "c": "gr" },
 ///     { "t": "!" }
 /// ]
 /// ```
