@@ -42,15 +42,15 @@ public struct ERTTextSegment: Codable {
     /// The text in current segment.
     ///
     /// JSON key:  `t`.
-    var text: String
+    public var text: String
     /// The style modifier.
     ///
     /// JSON key: `s`.
-    var style: Set<Style>?
+    public var style: Set<Style>?
     /// The color of the font. `nil` for standard body color.
     ///
     /// JSON key: `c`.
-    var color: Color?
+    public var color: Color?
     
     enum CodingKeys: String, CodingKey {
         case text = "t"
