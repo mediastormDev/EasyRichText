@@ -1,0 +1,36 @@
+name: Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  deployments: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "docs"
+  cancel-in-progress: true
+
+jobs:
+  docs:
+    runs-on: macOS-12
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate Docs
+        env:
+          OTHER_DOCC_FLAGS: "--transform-for-static-hosting --output-path=./public"
+        run: xcodebuild docbuild -scheme EasyRichText -destination 'platform=iOS Simulator,name=iPhone 13'
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: 692bd58c8585abc099232c16459f7af4
+          projectName: easyrichtext
+          directory: ./public
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
