@@ -23,9 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Generate Docs
-        env:
-          OTHER_DOCC_FLAGS: "--transform-for-static-hosting --output-path=./public"
-        run:
+        run: ./Scripts/Build_Doc.sh
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
         with:
