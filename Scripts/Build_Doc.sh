@@ -3,11 +3,11 @@ echo "Copying DocC archives to doc_archives..."
 mkdir docArchives
 cp -R `find docsData -type d -name "*.doccarchive"` docArchives
 
-# Loop over all directories ending with ".docarchive"
+# Loop over all directories ending with ".doccarchive"
 for dir in */; do
-    if [[ "$dir" == *.docarchive/ ]]; then
+    if [[ "$dir" == *.doccarchive/ ]]; then
         ARCHIVE=${dir%/} # Remove trailing slash
-        ARCHIVE_NAME=${ARCHIVE%.docarchive}
+        ARCHIVE_NAME=${ARCHIVE%.doccarchive}
         echo "Processing archive: $ARCHIVE_NAME"
 
         $(xcrun --find docc) process-archive transform-for-static-hosting "$ARCHIVE" --hosting-base-path $ARCHIVE_NAME --output-path ./public/$ARCHIVE_NAME
