@@ -39,7 +39,7 @@ public extension ERTDefinedColor {
         return uiColor.resolvedColor(with: .init()).cgColor
 #elseif canImport(AppKit)
         let nsColor = NSColor(color)
-        return nsColor.resolvedColor(with: .init()).cgColor
+        return nsColor.cgColor
 #endif
     }
 

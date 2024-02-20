@@ -8,6 +8,7 @@
 #if canImport(AppKit)
 
 import AppKit
+import EasyRichText
 
 public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, NSTextViewDelegate {
     var context: ERTRichTextEditContext<RichText>

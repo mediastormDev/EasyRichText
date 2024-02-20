@@ -8,6 +8,7 @@
 #if canImport(AppKit)
 import SwiftUI
 import AppKit
+import EasyRichText
 
 struct ERTTextEditor<RichText: ERTRichText>: NSViewRepresentable {
     @ObservedObject var editContext: ERTRichTextEditContext<RichText>
