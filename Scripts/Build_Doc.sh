@@ -4,7 +4,7 @@ mkdir docArchives
 cp -R `find docsData -type d -name "*.doccarchive"` docArchives
 
 # Loop over all directories ending with ".doccarchive"
-for dir in */; do
+for dir in docArchives/*/; do
     if [[ "$dir" == *.doccarchive/ ]]; then
         ARCHIVE=${dir%/} # Remove trailing slash
         ARCHIVE_NAME=${ARCHIVE%.doccarchive}
