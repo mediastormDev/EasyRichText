@@ -1,22 +1,48 @@
 //
 //  ERTRichText.swift
-//  
+//  RichTextTest
 //
-//  Created by Shibo Lyu on 2022/9/13.
+//  Created by Shibo Lyu on 2024/1/30.
 //
 
-import Foundation
+import SwiftUI
+#if canImport(AppKit)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
-/// The `Codable` text segment array.
-///
-/// ```json
-/// [
-///     { "t": "Hello, " },
-///     { "t": "world", "s": ["st"], "c": "rd" },
-///     { "t": "rich text", "s": ["bd"], "c": "gr" },
-///     { "t": "!" }
-/// ]
-/// ```
-///
-/// ![Rich text sample](richtext-sample.png)
-public typealias ERTRichText = [ERTTextSegment]
+public protocol ERTRichText: Codable, Hashable {
+    associatedtype Segment: ERTSegment
+
+    var segments: [Segment] { get set }
+
+    init()
+    init(attributedString: AttributedString)
+
+    func attributedString(defaultFont: CTFont) -> AttributedString
+}
+
+public extension ERTRichText {
+    init(attributedString: AttributedString) {
+        self.init()
+        self.segments = attributedString.runs.map { run in
+            let text = String(attributedString[run.range].characters)
+            return .init(text: text, attributeContainer: run.attributes)
+        }
+    }
+
+    init(nsAttributedString: NSAttributedString) {
+        let attributedString = ERTAttributedStringBridge.default.attributedString(for: nsAttributedString)
+
+        self.init(attributedString: attributedString)
+    }
+
+    func nsAttributedString(defaultFont: CTFont) -> NSAttributedString {
+        ERTAttributedStringBridge.default.nsAttributedString(for: attributedString(defaultFont: defaultFont))
+    }
+
+    var plainText: String {
+        segments.map { $0.text }.joined()
+    }
+}

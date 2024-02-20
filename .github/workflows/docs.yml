@@ -18,14 +18,14 @@ concurrency:
 
 jobs:
   docs:
-    runs-on: macOS-12
+    runs-on: macOS-14
 
     steps:
       - uses: actions/checkout@v3
       - name: Generate Docs
         env:
           OTHER_DOCC_FLAGS: "--transform-for-static-hosting --output-path=./public"
-        run: xcodebuild docbuild -scheme EasyRichText -destination 'platform=iOS Simulator,name=iPhone 13'
+        run: xcodebuild docbuild -scheme EasyRichText-Package -destination 'platform=iOS Simulator,name=iPhone 15'
       - name: Publish to Cloudflare Pages
         uses: cloudflare/pages-action@1
         with:
