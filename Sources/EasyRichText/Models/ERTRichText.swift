@@ -38,6 +38,11 @@ public extension ERTRichText {
         self.init(attributedString: attributedString)
     }
 
+    init(string: String) {
+        self.init()
+        self.segments = [.init(text: string)]
+    }
+
     func nsAttributedString(defaultFont: CTFont) -> NSAttributedString {
         ERTAttributedStringBridge.default.nsAttributedString(for: attributedString(defaultFont: defaultFont))
     }

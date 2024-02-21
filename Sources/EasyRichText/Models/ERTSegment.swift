@@ -15,6 +15,12 @@ public protocol ERTSegment: Codable, Hashable {
     func attributedString(defaultFont: CTFont) -> AttributedString
 }
 
+public extension ERTSegment {
+    init(text: String) {
+        self.init(text: text, attributeContainer: .init())
+    }
+}
+
 public protocol ERTForegroundColorSegment: Codable, Hashable {
     associatedtype ForegroundColor: ERTColor
 
