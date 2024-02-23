@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if canImport(SwiftUI)
+import SwiftUI
+#endif
 #if canImport(AppKit)
 import AppKit
 #elseif canImport(UIKit)
@@ -51,5 +54,31 @@ public struct ERTFontUtils {
         modifySymbolicTraits(&traits)
         return self.font(font, with: traits)
     }
+    #endif
+
+    #if canImport(SwiftUI)
+    #if canImport(UIKit)
+    public func uiFont(from font: Font) -> UIFont? {
+        var attributedString = AttributedString()
+        attributedString.swiftUI.font = font
+        let nsAttributedString = NSAttributedString(attributedString)
+        let font = nsAttributedString.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
+        return font
+    }
+    public func ctFont(from font: Font) -> CTFont? {
+        uiFont(from: font) as CTFont?
+    }
+    #elseif canImport(AppKit)
+    public func nsFont(from font: Font) -> NSFont? {
+        var attributedString = AttributedString()
+        attributedString.swiftUI.font = font
+        let nsAttributedString = NSAttributedString(attributedString)
+        let font = nsAttributedString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
+        return font
+    }
+    public func ctFont(from font: Font) -> CTFont? {
+        nsFont(from: font) as CTFont?
+    }
+    #endif
     #endif
 }

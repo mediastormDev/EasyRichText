@@ -43,6 +43,19 @@ public extension ERTRichText {
         self.segments = [.init(text: string)]
     }
 
+    func attributedString(defaultFont: CTFont) -> AttributedString {
+        segments.map { $0.attributedString(defaultFont: defaultFont) }.reduce(AttributedString(), +)
+    }
+    func attributedString(defaultFont: Font) -> AttributedString {
+        let ctFont = ERTFontUtils.default.ctFont(from: defaultFont)
+        #if canImport(AppKit)
+        let fallbackFont = NSFont.preferredFont(forTextStyle: .body)
+        #elseif canImport(UIKit)
+        let fallbackFont = UIFont.preferredFont(forTextStyle: .body)
+        #endif
+        return attributedString(defaultFont: ctFont ?? fallbackFont)
+    }
+
     func nsAttributedString(defaultFont: CTFont) -> NSAttributedString {
         ERTAttributedStringBridge.default.nsAttributedString(for: attributedString(defaultFont: defaultFont))
     }
