@@ -59,7 +59,7 @@ public struct ERTFontUtils {
     #if canImport(SwiftUI)
     #if canImport(UIKit)
     public func uiFont(from font: Font) -> UIFont? {
-        var attributedString = AttributedString()
+        var attributedString = AttributedString("1")
         attributedString.swiftUI.font = font
         let nsAttributedString = NSAttributedString(attributedString)
         let font = nsAttributedString.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
@@ -70,7 +70,7 @@ public struct ERTFontUtils {
     }
     #elseif canImport(AppKit)
     public func nsFont(from font: Font) -> NSFont? {
-        var attributedString = AttributedString()
+        var attributedString = AttributedString("1")
         attributedString.swiftUI.font = font
         let nsAttributedString = NSAttributedString(attributedString)
         let font = nsAttributedString.attribute(.font, at: 0, effectiveRange: nil) as? NSFont
