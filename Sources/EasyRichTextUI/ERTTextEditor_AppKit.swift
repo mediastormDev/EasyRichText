@@ -12,9 +12,11 @@ import EasyRichText
 
 struct ERTTextEditor<RichText: ERTRichText>: NSViewRepresentable {
     @ObservedObject var editContext: ERTRichTextEditContext<RichText>
+    var customize: ((NSTextView) -> ())?
 
-    init(editContext: ERTRichTextEditContext<RichText>) {
+    init(editContext: ERTRichTextEditContext<RichText>, customize: ((NSTextView) -> ())? = nil) {
         self.editContext = editContext
+        self.customize = customize
     }
 
     func makeCoordinator() -> ERTTextViewDelegate<RichText> {
@@ -41,6 +43,8 @@ struct ERTTextEditor<RichText: ERTRichText>: NSViewRepresentable {
 
         textView.textStorage?.setAttributedString(editContext.nsAttributedString)
         textView.delegate = context.coordinator
+
+        customize?(textView)
 
         return textView
     }
