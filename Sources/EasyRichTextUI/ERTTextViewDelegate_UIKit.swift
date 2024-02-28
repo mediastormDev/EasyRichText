@@ -29,7 +29,7 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, UITextViewDel
     }
 
     public func textViewDidEndEditing(_ textView: UITextView) {
-        context.triggerRichTextUpdate()
+        context.endEditing()
     }
 
     public func textViewDidChange(_ textView: UITextView) {

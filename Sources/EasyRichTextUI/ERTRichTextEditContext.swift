@@ -26,6 +26,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     var nsAttributedString: NSMutableAttributedString
     var defaultFont: CTFont
     var onTextUpdated: ((NSAttributedString) -> ())?
+    public var onEndEditing: (() -> ())?
 
     let italicSynthesizer: ERTItalicSynthesizer?
     let attributedStringBridge: ERTAttributedStringBridge
@@ -51,10 +52,11 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         }
     }
 
-    func triggerRichTextUpdate() {
+    func endEditing() {
         print("ERTRichTextEditContext triggerRichTextUpdate")
         Task { @MainActor in
             richText = .init(attributedString: attributedStringBridge.attributedString(for: normalizedNSAttributedString))
+            onEndEditing?()
         }
     }
 

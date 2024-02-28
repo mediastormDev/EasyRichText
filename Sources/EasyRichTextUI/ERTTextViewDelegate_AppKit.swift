@@ -27,7 +27,7 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, NSTextViewDel
     }
 
     public func textDidEndEditing(_ notification: Notification) {
-        context.triggerRichTextUpdate()
+        context.endEditing()
     }
 
     public func textDidChange(_ notification: Notification) {
