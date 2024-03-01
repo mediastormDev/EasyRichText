@@ -24,13 +24,35 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString
-    public var defaultFont: CTFont
+    public var defaultFont: CTFont {
+        didSet {
+            nsAttributedString = Self.nsAttributedString(
+                from: richText,
+                italicSynthesizer: italicSynthesizer,
+                defaultFont: defaultFont,
+                attributedStringBridge: attributedStringBridge
+            )
+        }
+    }
     var onTextUpdated: ((NSAttributedString) -> ())?
     public var onEndEditing: (() -> ())?
 
     let italicSynthesizer: ERTItalicSynthesizer?
     let attributedStringBridge: ERTAttributedStringBridge
     let fontUtils: ERTFontUtils
+
+    static func nsAttributedString(
+        from richText: RichText,
+        italicSynthesizer: ERTItalicSynthesizer?,
+        defaultFont: CTFont,
+        attributedStringBridge: ERTAttributedStringBridge
+    ) -> NSMutableAttributedString {
+        var attributedString = richText.attributedString(defaultFont: defaultFont)
+        if let italicSynthesizer {
+            attributedString = italicSynthesizer.synthesize(attributedString)
+        }
+        return .init(attributedString: attributedStringBridge.nsAttributedString(for: attributedString))
+    }
 
     public init(richText: RichText, defaultFont: CTFont, italicSynthesizer: ERTItalicSynthesizer? = nil, attributedStringBridge: ERTAttributedStringBridge = .default, fontUtils: ERTFontUtils = .default) {
         self.richText = richText
@@ -39,11 +61,12 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         self.attributedStringBridge = attributedStringBridge
         self.fontUtils = fontUtils
 
-        var attributedString = richText.attributedString(defaultFont: defaultFont)
-        if let italicSynthesizer {
-            attributedString = italicSynthesizer.synthesize(attributedString)
-        }
-        self.nsAttributedString = .init(attributedString: attributedStringBridge.nsAttributedString(for: attributedString))
+        self.nsAttributedString = Self.nsAttributedString(
+            from: richText,
+            italicSynthesizer: italicSynthesizer,
+            defaultFont: defaultFont,
+            attributedStringBridge: attributedStringBridge
+        )
     }
 
     func updateSelectedRange(_ range: NSRange?) {
