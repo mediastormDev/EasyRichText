@@ -104,6 +104,15 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         return range
     }
 
+    public func setRichText(_ richText: RichText) {
+        self.nsAttributedString = Self.nsAttributedString(
+            from: richText,
+            italicSynthesizer: italicSynthesizer,
+            defaultFont: defaultFont,
+            attributedStringBridge: attributedStringBridge
+        )
+    }
+
     public var normalizedNSAttributedString: NSAttributedString {
         if let italicSynthesizer {
             let attributedString = attributedStringBridge.attributedString(for: nsAttributedString)
