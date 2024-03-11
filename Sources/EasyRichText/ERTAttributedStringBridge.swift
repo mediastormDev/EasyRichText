@@ -28,11 +28,32 @@ public struct ERTAttributedStringBridge {
 
         for run in attributedString.runs {
             let mutableSubstring = NSMutableAttributedString(AttributedString(attributedString[run.range]))
+            let range = NSRange(location: 0, length: mutableSubstring.length)
+
             if bridgeInternalAttributes {
                 if run.synthesizedItalic ?? false {
-                    mutableSubstring.addAttribute(.ertSynthesizedItalic, value: true, range: NSRange(location: 0, length: mutableSubstring.length))
+                    mutableSubstring.addAttribute(.ertSynthesizedItalic, value: true, range: range)
                 }
             }
+
+            if bridgeColor {
+#if canImport(AppKit)
+                if let color = run.attributes.swiftUI.foregroundColor {
+                    mutableSubstring.addAttribute(.foregroundColor, value: NSColor(color), range: range)
+                }
+                if let color = run.attributes.swiftUI.backgroundColor {
+                    mutableSubstring.addAttribute(.backgroundColor, value: NSColor(color), range: range)
+                }
+#elseif canImport(UIKit)
+                if let color = run.attributes.swiftUI.foregroundColor {
+                    mutableSubstring.addAttribute(.foregroundColor, value: UIColor(color), range: range)
+                }
+                if let color = run.attributes.swiftUI.backgroundColor {
+                    mutableSubstring.addAttribute(.backgroundColor, value: UIColor(color), range: range)
+                }
+#endif
+            }
+
             mutableString.append(mutableSubstring)
         }
 
