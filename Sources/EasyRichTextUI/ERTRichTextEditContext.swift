@@ -170,6 +170,17 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
         return underlineStyleNSNumber != 0
     }
+    
+    public var isStrikethrough: Bool {
+        guard
+            let strikethroughStyleNumber = normalizedNSAttributedString.attribute(.strikethroughStyle, at: safeCurrentRange().location, effectiveRange: nil),
+            let strikethroughStyleNSNumber = strikethroughStyleNumber as? NSNumber
+        else {
+            return false
+        }
+
+        return strikethroughStyleNSNumber != 0
+    }
 
     public func setBold(_ bold: Bool = true) {
         let newFont = fontUtils.font(currentFont) { traits in
@@ -233,7 +244,15 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public func toggleUnderlined() {
         setUnderlined(!isUnderlined)
     }
-
+    
+    public func setStrikethrough(_ strikethrough: Bool) {
+        nsAttributedString.addAttribute(.strikethroughStyle, value: strikethrough ? NSUnderlineStyle.single.rawValue : 0, range: safeCurrentRange())
+        triggerTextUpdate()
+    }
+    public func toggleStrikethrough() {
+        setStrikethrough(!isStrikethrough)
+    }
+    
     // MARK: Color
 
 #if canImport(SwiftUI)
