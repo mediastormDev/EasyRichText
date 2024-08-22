@@ -253,6 +253,15 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         setStrikethrough(!isStrikethrough)
     }
     
+    public func removeAllAttributes(){
+        setBold(false)
+        setItalic(false)
+        setUnderlined(false)
+        setStrikethrough(false)
+        setColor(nil)
+        setBackgroundColor(nil)
+    }
+    
     // MARK: Color
 
 #if canImport(SwiftUI)
