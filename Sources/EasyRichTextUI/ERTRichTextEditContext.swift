@@ -258,8 +258,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         setItalic(false)
         setUnderlined(false)
         setStrikethrough(false)
-        setColor(nil)
-        setBackgroundColor(nil)
+        setColor(.primary)
+        setBackgroundColor(.clear)
     }
     
     // MARK: Color
