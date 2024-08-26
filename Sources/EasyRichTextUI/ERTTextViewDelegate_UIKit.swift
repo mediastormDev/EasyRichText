@@ -40,11 +40,7 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, UITextViewDel
         }
         guard let textView = textView as? TextView else { return }
         let size = textView.sizeThatFits(CGSize(width: textView.maxLayoutWidth, height: .greatestFiniteMagnitude))
-        textView.constraints.forEach { constraint in
-            if constraint.firstAttribute == .height {
-                constraint.constant = size.height
-            }
-        }
+        textView.frame.size = size
         textView.invalidateIntrinsicContentSize()
         textView.layoutIfNeeded()
     }
