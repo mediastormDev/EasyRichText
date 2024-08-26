@@ -38,6 +38,7 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, UITextViewDel
             print("ERTTextViewDelegate textViewDidChange attributedText = \(attributedText)")
             context.nsAttributedString = NSMutableAttributedString(attributedString: attributedText)
         }
+        textView.invalidateIntrinsicContentSize()
     }
 }
 
