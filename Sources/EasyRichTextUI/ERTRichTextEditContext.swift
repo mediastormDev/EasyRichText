@@ -89,7 +89,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
     func safeCurrentRange(omitLast: Bool = false) -> NSRange {
         let length = normalizedNSAttributedString.length
-        let omit = 1/*omitLast ? 1 : 0*/
+        let omit = length > 0 ? 1 : 0/*omitLast ? 1 : 0*/
 
         let range = if let selectedRange {
             NSRange(
