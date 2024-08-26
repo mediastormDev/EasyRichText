@@ -70,6 +70,8 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 
     func updateUIView(_ uiView: TextView, context: Context) {
         uiView.maxLayoutWidth = maxLayoutWidth
+        uiView.invalidateIntrinsicContentSize()
+        uiView.layoutIfNeeded()
     }
 }
 
