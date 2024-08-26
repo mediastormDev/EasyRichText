@@ -57,7 +57,7 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 
         textView.typingAttributes[.font] = editContext.defaultFont
         textView.backgroundColor = .clear
-        textView.isScrollEnabled = false
+        textView.isScrollEnabled = true
 
         customize?(textView)
 
