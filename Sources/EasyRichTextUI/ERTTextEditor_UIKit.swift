@@ -67,13 +67,13 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: TextView, context: Context) {
-        let fittingSize = uiView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
-           
-           if fittingSize.width != uiView.maxLayoutWidth {
-               uiView.maxLayoutWidth = fittingSize.width
-               uiView.invalidateIntrinsicContentSize()
-           }
-        
+//        let fittingSize = uiView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+//           
+//           if fittingSize.width != uiView.maxLayoutWidth {
+//               uiView.maxLayoutWidth = fittingSize.width
+//               uiView.invalidateIntrinsicContentSize()
+//           }
+        uiView.maxLayoutWidth = maxLayoutWidth
     }
 }
 
