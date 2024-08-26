@@ -23,10 +23,8 @@ final class TextView: UITextView {
         guard maxLayoutWidth > 0 else {
             return super.intrinsicContentSize
         }
-
-        return sizeThatFits(
-            CGSize(width: maxLayoutWidth, height: .greatestFiniteMagnitude)
-        )
+        let size = sizeThatFits(CGSize(width: maxLayoutWidth, height: .greatestFiniteMagnitude))
+        return CGSize(width: min(size.width, maxLayoutWidth), height: size.height)
     }
 }
 
@@ -69,7 +67,13 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: TextView, context: Context) {
-        uiView.maxLayoutWidth = maxLayoutWidth
+        let fittingSize = uiView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
+           
+           if fittingSize.width != uiView.maxLayoutWidth {
+               uiView.maxLayoutWidth = fittingSize.width
+               uiView.invalidateIntrinsicContentSize()
+           }
+        
     }
 }
 
