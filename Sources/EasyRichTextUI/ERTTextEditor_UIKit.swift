@@ -11,7 +11,7 @@ import UIKit
 import EasyRichText
 
 // https://gonzalezreal.github.io/2020/01/31/rendering-attributed-strings-in-swiftui.html
-private final class TextView: UITextView {
+final class TextView: UITextView {
     var maxLayoutWidth: CGFloat = 0 {
         didSet {
             guard maxLayoutWidth != oldValue else { return }

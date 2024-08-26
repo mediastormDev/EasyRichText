@@ -38,7 +38,15 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, UITextViewDel
             print("ERTTextViewDelegate textViewDidChange attributedText = \(attributedText)")
             context.nsAttributedString = NSMutableAttributedString(attributedString: attributedText)
         }
+        guard let textView = textView as? TextView else { return }
+        let size = textView.sizeThatFits(CGSize(width: textView.maxLayoutWidth, height: .greatestFiniteMagnitude))
+        textView.constraints.forEach { constraint in
+            if constraint.firstAttribute == .height {
+                constraint.constant = size.height
+            }
+        }
         textView.invalidateIntrinsicContentSize()
+        textView.layoutIfNeeded()
     }
 }
 
