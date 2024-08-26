@@ -89,7 +89,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
     func safeCurrentRange(omitLast: Bool = false) -> NSRange {
         let length = normalizedNSAttributedString.length
-        let omit = omitLast ? 1 : 0
+        let omit = 1/*omitLast ? 1 : 0*/
 
         let range = if let selectedRange {
             NSRange(
@@ -222,7 +222,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #endif
         }
 
-        if let italicSynthesizer {
+        if let italicSynthesizer, italic {
             newFont = italicSynthesizer.synthesize(newFont)
         }
 
@@ -258,8 +258,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         setItalic(false)
         setUnderlined(false)
         setStrikethrough(false)
-        setColor(.primary)
-        setBackgroundColor(.clear)
+        setColor(nil)
+        setBackgroundColor(nil)
     }
     
     // MARK: Color

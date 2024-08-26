@@ -40,16 +40,24 @@ public struct ERTAttributedStringBridge {
 #if canImport(AppKit)
                 if let color = run.attributes.swiftUI.foregroundColor {
                     mutableSubstring.addAttribute(.foregroundColor, value: NSColor(color), range: range)
+                }else{
+                    mutableSubstring.removeAttribute(.foregroundColor, range: range)
                 }
                 if let color = run.attributes.swiftUI.backgroundColor {
                     mutableSubstring.addAttribute(.backgroundColor, value: NSColor(color), range: range)
+                }else{
+                    mutableSubstring.removeAttribute(.backgroundColor, range: range)
                 }
 #elseif canImport(UIKit)
                 if let color = run.attributes.swiftUI.foregroundColor {
                     mutableSubstring.addAttribute(.foregroundColor, value: UIColor(color), range: range)
+                }else{
+                    mutableSubstring.removeAttribute(.foregroundColor, range: range)
                 }
                 if let color = run.attributes.swiftUI.backgroundColor {
                     mutableSubstring.addAttribute(.backgroundColor, value: UIColor(color), range: range)
+                }else{
+                    mutableSubstring.removeAttribute(.backgroundColor, range: range)
                 }
 #endif
             }
@@ -80,18 +88,26 @@ public struct ERTAttributedStringBridge {
             for run in attributedString.runs {
                 if let nsColor = run.attributes.appKit.foregroundColor {
                     attributedString[run.range].swiftUI.foregroundColor = Color(nsColor: nsColor)
+                }else{
+                    attributedString[run.range].swiftUI.foregroundColor = Color.primary
                 }
                 if let nsColor = run.attributes.appKit.backgroundColor {
                     attributedString[run.range].swiftUI.backgroundColor = Color(nsColor: nsColor)
+                }else{
+                    attributedString[run.range].swiftUI.backgroundColor = nil
                 }
             }
 #elseif canImport(UIKit)
             for run in attributedString.runs {
                 if let uiColor = run.attributes.uiKit.foregroundColor {
                     attributedString[run.range].swiftUI.foregroundColor = Color(uiColor: uiColor)
+                }else{
+                    attributedString[run.range].swiftUI.foregroundColor = Color.primary
                 }
                 if let uiColor = run.attributes.uiKit.backgroundColor {
                     attributedString[run.range].swiftUI.backgroundColor = Color(uiColor: uiColor)
+                }else{
+                    attributedString[run.range].swiftUI.backgroundColor = nil
                 }
             }
 #endif
