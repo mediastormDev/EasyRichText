@@ -91,7 +91,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         let length = normalizedNSAttributedString.length
         let omit = length > 0 ? 1 : 0/*omitLast ? 1 : 0*/
 
-        let range = if let selectedRange {
+        let range = if let selectedRange, selectedRange.length > 0 {
             NSRange(
                 location: max(0, min(length - omit, selectedRange.location)),
                 length: min(selectedRange.length, max(0, length - selectedRange.location))
