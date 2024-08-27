@@ -38,7 +38,7 @@ public struct ERTAttributedStringBridge {
 
             if bridgeColor {
 #if canImport(AppKit)
-                if let color = run.attributes.swiftUI.foregroundColor {
+                if let color = run.attributes.swiftUI.foregroundColor, color != .primary {
                     mutableSubstring.addAttribute(.foregroundColor, value: NSColor(color), range: range)
                 }else{
                     mutableSubstring.removeAttribute(.foregroundColor, range: range)
@@ -49,7 +49,7 @@ public struct ERTAttributedStringBridge {
                     mutableSubstring.removeAttribute(.backgroundColor, range: range)
                 }
 #elseif canImport(UIKit)
-                if let color = run.attributes.swiftUI.foregroundColor {
+                if let color = run.attributes.swiftUI.foregroundColor, color != .primary {
                     mutableSubstring.addAttribute(.foregroundColor, value: UIColor(color), range: range)
                 }else{
                     mutableSubstring.removeAttribute(.foregroundColor, range: range)
