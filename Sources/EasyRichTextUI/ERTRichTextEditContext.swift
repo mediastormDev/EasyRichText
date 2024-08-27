@@ -24,6 +24,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString
+    var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
             nsAttributedString = Self.nsAttributedString(
@@ -36,6 +37,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
     var onTextUpdated: ((NSAttributedString) -> ())?
     public var onEndEditing: (() -> ())?
+    public var onSelectedAttributes: (([NSAttributedString.Key: Any]) -> Void)?
 
     let italicSynthesizer: ERTItalicSynthesizer?
     let attributedStringBridge: ERTAttributedStringBridge
@@ -91,13 +93,13 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         let length = normalizedNSAttributedString.length
         let omit = length > 0 ? 1 : 0/*omitLast ? 1 : 0*/
 
-        let range = if let selectedRange, selectedRange.length > 0 {
+        let range = if let selectedRange{
             NSRange(
                 location: max(0, min(length - omit, selectedRange.location)),
                 length: min(selectedRange.length, max(0, length - selectedRange.location))
             )
         } else {
-            NSRange(location: 0, length: length)
+            NSRange(location: 0, length: 0)
         }
         print("ERTRichTextEditContext safeCurrentRange range = \(range)")
 
@@ -199,10 +201,12 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #endif
         }
         nsAttributedString.addAttribute(.font, value: newFont, range: safeCurrentRange(omitLast: true))
+        selectedAttributes[.font] = newFont
         triggerTextUpdate()
     }
     public func toggleBold() {
         setBold(!isBold)
+        onSelectedAttributes?(selectedAttributes)
     }
 
     public func setItalic(_ italic: Bool = true) {
@@ -228,6 +232,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
         let range = safeCurrentRange(omitLast: true)
         nsAttributedString.addAttribute(.font, value: newFont, range: range)
+        selectedAttributes[.font] = newFont
         if italicSynthesizer != nil {
             nsAttributedString.addAttribute(.ertSynthesizedItalic, value: italic, range: range)
         }
@@ -235,22 +240,27 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
     public func toggleItalic() {
         setItalic(!isItalic)
+        onSelectedAttributes?(selectedAttributes)
     }
 
     public func setUnderlined(_ underlined: Bool) {
         nsAttributedString.addAttribute(.underlineStyle, value: underlined ? NSUnderlineStyle.single.rawValue : 0, range: safeCurrentRange())
+        selectedAttributes[.underlineStyle] = underlined ? NSUnderlineStyle.single.rawValue : 0
         triggerTextUpdate()
     }
     public func toggleUnderlined() {
         setUnderlined(!isUnderlined)
+        onSelectedAttributes?(selectedAttributes)
     }
     
     public func setStrikethrough(_ strikethrough: Bool) {
         nsAttributedString.addAttribute(.strikethroughStyle, value: strikethrough ? NSUnderlineStyle.single.rawValue : 0, range: safeCurrentRange())
+        selectedAttributes[.strikethroughStyle] = strikethrough ? NSUnderlineStyle.single.rawValue : 0
         triggerTextUpdate()
     }
     public func toggleStrikethrough() {
         setStrikethrough(!isStrikethrough)
+        onSelectedAttributes?(selectedAttributes)
     }
     
     public func removeAllAttributes(){
@@ -304,9 +314,12 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.foregroundColor, value: NSColor(color), range: safeCurrentRange())
 #endif
+            selectedAttributes[.foregroundColor] = color
         } else {
             nsAttributedString.removeAttribute(.foregroundColor, range: safeCurrentRange())
+            selectedAttributes.removeValue(forKey: .foregroundColor)
         }
+        onSelectedAttributes?(selectedAttributes)
         triggerTextUpdate()
     }
 
@@ -317,9 +330,12 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.backgroundColor, value: NSColor(color), range: safeCurrentRange())
 #endif
+            selectedAttributes[.backgroundColor] = color
         } else {
             nsAttributedString.removeAttribute(.backgroundColor, range: safeCurrentRange())
+            selectedAttributes.removeValue(forKey: .backgroundColor)
         }
+        onSelectedAttributes?(selectedAttributes)
         triggerTextUpdate()
     }
 #endif

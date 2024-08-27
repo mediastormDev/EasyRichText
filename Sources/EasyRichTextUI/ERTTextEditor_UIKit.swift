@@ -51,6 +51,10 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
             textView.attributedText = newText
             textView.selectedTextRange = selection
         }
+        
+        editContext.onSelectedAttributes = { attributes in
+            textView.typingAttributes = attributes
+        }
 
         textView.attributedText = editContext.nsAttributedString
         textView.delegate = context.coordinator
@@ -68,7 +72,7 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 
     func updateUIView(_ uiView: TextView, context: Context) {
 //        let fittingSize = uiView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude))
-//           
+//
 //           if fittingSize.width != uiView.maxLayoutWidth {
 //               uiView.maxLayoutWidth = fittingSize.width
 //               uiView.invalidateIntrinsicContentSize()
