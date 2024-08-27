@@ -63,9 +63,12 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 
         textView.maxLayoutWidth = maxLayoutWidth
 
-        textView.typingAttributes = [:]
         editContext.onSelectedAttributes = { attributes in
-            textView.typingAttributes = attributes
+            var currentAttributes = textView.typingAttributes
+            for (key, value) in attributes {
+                currentAttributes[key] = value
+            }
+            textView.typingAttributes = currentAttributes
         }
         
         return textView
