@@ -51,10 +51,6 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
             textView.attributedText = newText
             textView.selectedTextRange = selection
         }
-        
-        editContext.onSelectedAttributes = { attributes in
-            textView.typingAttributes = attributes
-        }
 
         textView.attributedText = editContext.nsAttributedString
         textView.delegate = context.coordinator
@@ -67,6 +63,11 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 
         textView.maxLayoutWidth = maxLayoutWidth
 
+        textView.typingAttributes = [:]
+        editContext.onSelectedAttributes = { attributes in
+            textView.typingAttributes = attributes
+        }
+        
         return textView
     }
 
