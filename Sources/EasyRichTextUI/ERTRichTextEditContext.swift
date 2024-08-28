@@ -149,6 +149,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public var isBold: Bool {
         if let font = selectedAttributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitBold){
             return true
+        }else{
+            return false
         }
 #if canImport(AppKit)
         return currentFont.fontDescriptor.symbolicTraits.contains(.bold)
@@ -160,6 +162,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public var isItalic: Bool {
         if let font = selectedAttributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitItalic){
             return true
+        }else{
+            return false
         }
 #if canImport(AppKit)
         return currentFont.fontDescriptor.symbolicTraits.contains(.italic)
@@ -171,6 +175,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public var isUnderlined: Bool {
         if let value = selectedAttributes[.underlineStyle] as? Int, value == NSUnderlineStyle.single.rawValue{
             return true
+        }else{
+            return false
         }
         guard
             let underlineStyleNumber = normalizedNSAttributedString.attribute(.underlineStyle, at: safeCurrentRange().location, effectiveRange: nil),
@@ -185,6 +191,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public var isStrikethrough: Bool {
         if let value = selectedAttributes[.strikethroughStyle] as? Int, value == NSUnderlineStyle.single.rawValue{
             return true
+        }else{
+            return false
         }
         guard
             let strikethroughStyleNumber = normalizedNSAttributedString.attribute(.strikethroughStyle, at: safeCurrentRange().location, effectiveRange: nil),
@@ -288,35 +296,37 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
 #if canImport(SwiftUI)
     public var currentColor: Color? {
-#if canImport(UIKit)
-        if let color = normalizedNSAttributedString.attribute(.foregroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
-            Color(uiColor: color)
-        } else {
-            nil
-        }
-#elseif canImport(AppKit)
-        if let color = normalizedNSAttributedString.attribute(.foregroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? NSColor {
-            Color(nsColor: color)
-        } else {
-            nil
-        }
-#endif
+        return Color(selectedAttributes[.foregroundColor] as! UIColor)
+//#if canImport(UIKit)
+//        if let color = normalizedNSAttributedString.attribute(.foregroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
+//            Color(uiColor: color)
+//        } else {
+//            nil
+//        }
+//#elseif canImport(AppKit)
+//        if let color = normalizedNSAttributedString.attribute(.foregroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? NSColor {
+//            Color(nsColor: color)
+//        } else {
+//            nil
+//        }
+//#endif
     }
 
     public var currentBackgroundColor: Color? {
-#if canImport(UIKit)
-        if let color = normalizedNSAttributedString.attribute(.backgroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
-            Color(uiColor: color)
-        } else {
-            nil
-        }
-#elseif canImport(AppKit)
-        if let color = normalizedNSAttributedString.attribute(.backgroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? NSColor {
-            Color(nsColor: color)
-        } else {
-            nil
-        }
-#endif
+        return Color(selectedAttributes[.backgroundColor] as! UIColor)
+//#if canImport(UIKit)
+//        if let color = normalizedNSAttributedString.attribute(.backgroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
+//            Color(uiColor: color)
+//        } else {
+//            nil
+//        }
+//#elseif canImport(AppKit)
+//        if let color = normalizedNSAttributedString.attribute(.backgroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? NSColor {
+//            Color(nsColor: color)
+//        } else {
+//            nil
+//        }
+//#endif
     }
 
     public func setColor(_ color: Color?) {
