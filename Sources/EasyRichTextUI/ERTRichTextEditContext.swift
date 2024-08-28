@@ -147,6 +147,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
     // MARK: Bold, Italic, Underline
     public var isBold: Bool {
+        if let font = selectedAttributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitBold){
+            return true
+        }
 #if canImport(AppKit)
         return currentFont.fontDescriptor.symbolicTraits.contains(.bold)
 #elseif canImport(UIKit)
@@ -155,6 +158,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public var isItalic: Bool {
+        if let font = selectedAttributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitItalic){
+            return true
+        }
 #if canImport(AppKit)
         return currentFont.fontDescriptor.symbolicTraits.contains(.italic)
 #elseif canImport(UIKit)
@@ -163,6 +169,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public var isUnderlined: Bool {
+        if let value = selectedAttributes[.underlineStyle] as? Int, value == NSUnderlineStyle.single.rawValue{
+            return true
+        }
         guard
             let underlineStyleNumber = normalizedNSAttributedString.attribute(.underlineStyle, at: safeCurrentRange().location, effectiveRange: nil),
             let underlineStyleNSNumber = underlineStyleNumber as? NSNumber
@@ -174,6 +183,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
     
     public var isStrikethrough: Bool {
+        if let value = selectedAttributes[.strikethroughStyle] as? Int, value == NSUnderlineStyle.single.rawValue{
+            return true
+        }
         guard
             let strikethroughStyleNumber = normalizedNSAttributedString.attribute(.strikethroughStyle, at: safeCurrentRange().location, effectiveRange: nil),
             let strikethroughStyleNSNumber = strikethroughStyleNumber as? NSNumber
