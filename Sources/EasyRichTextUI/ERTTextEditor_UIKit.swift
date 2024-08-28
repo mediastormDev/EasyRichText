@@ -50,6 +50,7 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
             let selection = textView.selectedTextRange
             textView.attributedText = newText
             textView.selectedTextRange = selection
+            textView.textAlignment = .center
         }
 
         textView.attributedText = editContext.nsAttributedString
