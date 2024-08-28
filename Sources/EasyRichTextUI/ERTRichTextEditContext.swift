@@ -314,7 +314,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.foregroundColor, value: NSColor(color), range: safeCurrentRange())
 #endif
-            selectedAttributes[.foregroundColor] = color
+            selectedAttributes[.foregroundColor] = UIColor(color)
         } else {
             nsAttributedString.removeAttribute(.foregroundColor, range: safeCurrentRange())
             selectedAttributes.removeValue(forKey: .foregroundColor)
@@ -330,7 +330,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.backgroundColor, value: NSColor(color), range: safeCurrentRange())
 #endif
-            selectedAttributes[.backgroundColor] = color
+            selectedAttributes[.backgroundColor] = UIColor(color)
         } else {
             nsAttributedString.removeAttribute(.backgroundColor, range: safeCurrentRange())
             selectedAttributes.removeValue(forKey: .backgroundColor)
