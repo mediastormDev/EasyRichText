@@ -296,7 +296,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
 #if canImport(SwiftUI)
     public var currentColor: Color? {
-        return Color(selectedAttributes[.foregroundColor] as! UIColor)
+        guard let color = selectedAttributes[.foregroundColor] as? UIColor else {return nil}
+        return Color(uiColor: color)
 //#if canImport(UIKit)
 //        if let color = normalizedNSAttributedString.attribute(.foregroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
 //            Color(uiColor: color)
@@ -313,7 +314,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public var currentBackgroundColor: Color? {
-        return Color(selectedAttributes[.backgroundColor] as! UIColor)
+        guard let color = selectedAttributes[.backgroundColor] as? UIColor else {return nil}
+        return Color(uiColor: color)
 //#if canImport(UIKit)
 //        if let color = normalizedNSAttributedString.attribute(.backgroundColor, at: safeCurrentRange().location, effectiveRange: nil) as? UIColor {
 //            Color(uiColor: color)
