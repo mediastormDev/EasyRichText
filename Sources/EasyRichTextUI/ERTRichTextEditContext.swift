@@ -228,6 +228,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         if range.length > 0{
             nsAttributedString.addAttribute(.font, value: newFont, range: range)
         }
+        selectedAttributes[.font] = newFont
         triggerTextUpdate()
     }
     public func toggleBold() {
