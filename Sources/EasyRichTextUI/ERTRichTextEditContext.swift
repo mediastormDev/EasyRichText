@@ -23,7 +23,7 @@ import SwiftUI
 public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
-    var nsAttributedString: NSMutableAttributedString
+    @Published var nsAttributedString: NSMutableAttributedString
     var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
@@ -225,9 +225,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 #endif
         }
         let range = safeCurrentRange()
-        if range.length > 0{
-            nsAttributedString.addAttribute(.font, value: newFont, range: range)
-        }
+        nsAttributedString.addAttribute(.font, value: newFont, range: range)
         selectedAttributes[.font] = newFont
         triggerTextUpdate()
     }
@@ -258,11 +256,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         }
 
         let range = safeCurrentRange(omitLast: true)
-        if range.length > 0 {
-            nsAttributedString.addAttribute(.font, value: newFont, range: range)
-        }
+        nsAttributedString.addAttribute(.font, value: newFont, range: range)
         selectedAttributes[.font] = newFont
-        if italicSynthesizer != nil, range.length > 0 {
+        if italicSynthesizer != nil {
             nsAttributedString.addAttribute(.ertSynthesizedItalic, value: italic, range: range)
         }
         triggerTextUpdate()
@@ -274,9 +270,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
 
     public func setUnderlined(_ underlined: Bool) {
         let range = safeCurrentRange()
-        if range.length > 0 {
-            nsAttributedString.addAttribute(.underlineStyle, value: underlined ? NSUnderlineStyle.single.rawValue : 0, range: range)
-        }
+        nsAttributedString.addAttribute(.underlineStyle, value: underlined ? NSUnderlineStyle.single.rawValue : 0, range: range)
         selectedAttributes[.underlineStyle] = underlined ? NSUnderlineStyle.single.rawValue : 0
         triggerTextUpdate()
     }
@@ -287,9 +281,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     
     public func setStrikethrough(_ strikethrough: Bool) {
         let range = safeCurrentRange()
-        if range.length > 0 {
-            nsAttributedString.addAttribute(.strikethroughStyle, value: strikethrough ? NSUnderlineStyle.single.rawValue : 0, range: range)
-        }
+        nsAttributedString.addAttribute(.strikethroughStyle, value: strikethrough ? NSUnderlineStyle.single.rawValue : 0, range: range)
         selectedAttributes[.strikethroughStyle] = strikethrough ? NSUnderlineStyle.single.rawValue : 0
         triggerTextUpdate()
     }
@@ -349,18 +341,14 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public func setColor(_ color: Color?) {
         let range = safeCurrentRange()
         if let color {
-            if range.length > 0 {
 #if canImport(UIKit)
             nsAttributedString.addAttribute(.foregroundColor, value: UIColor(color), range: range)
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.foregroundColor, value: NSColor(color), range: range)
 #endif
-            }
             selectedAttributes[.foregroundColor] = UIColor(color)
         } else {
-            if range.length > 0 {
-                nsAttributedString.removeAttribute(.foregroundColor, range: range)
-            }
+            nsAttributedString.removeAttribute(.foregroundColor, range: range)
             selectedAttributes.removeValue(forKey: .foregroundColor)
         }
         onSelectedAttributes?(selectedAttributes)
@@ -370,18 +358,14 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public func setBackgroundColor(_ color: Color?) {
         let range = safeCurrentRange()
         if let color {
-            if range.length > 0{
 #if canImport(UIKit)
             nsAttributedString.addAttribute(.backgroundColor, value: UIColor(color), range: range)
 #elseif canImport(AppKit)
             nsAttributedString.addAttribute(.backgroundColor, value: NSColor(color), range: range)
 #endif
-            }
             selectedAttributes[.backgroundColor] = UIColor(color)
         } else {
-            if range.length > 0{
-                nsAttributedString.removeAttribute(.backgroundColor, range: range)
-            }
+            nsAttributedString.removeAttribute(.backgroundColor, range: range)
             selectedAttributes.removeValue(forKey: .backgroundColor)
         }
         onSelectedAttributes?(selectedAttributes)
