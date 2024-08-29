@@ -99,7 +99,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
                 length: min(selectedRange.length, max(0, length - selectedRange.location))
             )
         } else {
-            NSRange(location: length - 1, length: 0)
+            NSRange(location: 0, length: 0)
         }
         print("ERTRichTextEditContext safeCurrentRange range = \(range)")
 
