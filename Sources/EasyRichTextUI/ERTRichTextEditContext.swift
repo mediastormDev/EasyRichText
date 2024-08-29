@@ -137,7 +137,11 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     public var currentFont: UIFont {
         let range = safeCurrentRange()
         print("ERTRichTextEditContext currentFont range = \(range), normalizedNSAttributedString = \(normalizedNSAttributedString)")
-        return if let value = normalizedNSAttributedString.attribute(.font, at: safeCurrentRange().location, effectiveRange: nil), let font = value as? UIFont {
+        if range.length == 0 {
+            return defaultFont
+        }
+        
+        return if let value = normalizedNSAttributedString.attribute(.font, at: range.location, effectiveRange: nil), let font = value as? UIFont {
             font
         } else {
             defaultFont
