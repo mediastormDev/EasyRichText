@@ -23,8 +23,8 @@ import SwiftUI
 public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
-    @Published var nsAttributedString: NSMutableAttributedString
-    var selectedAttributes: [NSAttributedString.Key: Any] = [:]
+    var nsAttributedString: NSMutableAttributedString
+    @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
             nsAttributedString = Self.nsAttributedString(
@@ -99,7 +99,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
                 length: min(selectedRange.length, max(0, length - selectedRange.location))
             )
         } else {
-            NSRange(location: 0, length: 0)
+            NSRange(location: length > 0 ? length - 1 : 0, length: 0)
         }
         print("ERTRichTextEditContext safeCurrentRange range = \(range)")
 
