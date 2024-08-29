@@ -164,8 +164,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public var isItalic: Bool {
-        if let font = selectedAttributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitItalic){
-            return true
+        if let value = selectedAttributes[.ertSynthesizedItalic] as? Bool {
+            return value
         }else{
             return false
         }
@@ -258,6 +258,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         let range = safeCurrentRange(omitLast: true)
         nsAttributedString.addAttribute(.font, value: newFont, range: range)
         selectedAttributes[.font] = newFont
+        selectedAttributes[.ertSynthesizedItalic] = italic
         if italicSynthesizer != nil {
             nsAttributedString.addAttribute(.ertSynthesizedItalic, value: italic, range: range)
         }
