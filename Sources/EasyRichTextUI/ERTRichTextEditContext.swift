@@ -209,6 +209,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public func setBold(_ bold: Bool = true) {
+        var isTraitItalic = false
         var newFont = fontUtils.font(currentFont) { traits in
 #if canImport(AppKit)
             if bold {
@@ -216,16 +217,18 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             } else {
                 traits.remove(.bold)
             }
+            isTraitItalic = traits.contains(.italic)
 #elseif canImport(UIKit)
             if bold {
                 traits.insert(.traitBold)
             } else {
                 traits.remove(.traitBold)
             }
+            isTraitItalic = traits.contains(.traitItalic)
 #endif
         }
         
-        if let italicSynthesizer {
+        if let italicSynthesizer, isTraitItalic {
             newFont = italicSynthesizer.synthesize(newFont)
         }
         
