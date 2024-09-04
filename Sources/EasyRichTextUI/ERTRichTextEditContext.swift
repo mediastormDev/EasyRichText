@@ -209,7 +209,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
 
     public func setBold(_ bold: Bool = true) {
-        let newFont = fontUtils.font(currentFont) { traits in
+        var newFont = fontUtils.font(currentFont) { traits in
 #if canImport(AppKit)
             if bold {
                 traits.insert(.bold)
@@ -224,6 +224,11 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             }
 #endif
         }
+        
+        if let italicSynthesizer {
+            newFont = italicSynthesizer.synthesize(newFont)
+        }
+        
         let range = safeCurrentRange()
         nsAttributedString.addAttribute(.font, value: newFont, range: range)
         selectedAttributes[.font] = newFont
