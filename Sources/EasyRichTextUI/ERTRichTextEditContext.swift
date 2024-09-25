@@ -76,6 +76,12 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             selectedRange = range
         }
     }
+    
+    func focusChanged() {
+        Task { @MainActor in
+            richText = .init(attributedString: attributedStringBridge.attributedString(for: normalizedNSAttributedString))
+        }
+    }
 
     func endEditing() {
         print("ERTRichTextEditContext triggerRichTextUpdate")
