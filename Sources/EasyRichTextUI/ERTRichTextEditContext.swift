@@ -77,7 +77,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
         }
     }
     
-    func focusChanged() {
+    public func focusChanged() {
         Task { @MainActor in
             richText = .init(attributedString: attributedStringBridge.attributedString(for: normalizedNSAttributedString))
         }
