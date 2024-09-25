@@ -78,9 +78,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     }
     
     public func focusChanged() {
-        Task { @MainActor in
+//        Task { @MainActor in
             richText = .init(attributedString: attributedStringBridge.attributedString(for: normalizedNSAttributedString))
-        }
+//        }
     }
 
     func endEditing() {
