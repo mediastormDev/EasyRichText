@@ -92,30 +92,34 @@ public struct ERTTextEditor<RichText: ERTRichText>: View {
     @ObservedObject public var editContext: ERTRichTextEditContext<RichText>
     var customize: ((UITextView) -> ())?
     
-    @State private var size: CGSize = .zero
+    var width: CGFloat = .zero
     
-    public init(editContext: ERTRichTextEditContext<RichText>, customize: ((UITextView) -> ())? = nil) {
+    var alignment: NSTextAlignment
+    
+    public init(editContext: ERTRichTextEditContext<RichText>, width: CGFloat, alignment: NSTextAlignment = .center, customize: ((UITextView) -> ())? = nil) {
         self.editContext = editContext
         self.customize = customize
+        self.alignment = alignment
+        self.width = width
     }
     
     public var body: some View {
         ERTTextEditorRaw(
             editContext: editContext,
             customize: customize,
-            maxLayoutWidth: size.width
+            maxLayoutWidth: width
         )
-        .background {
-            GeometryReader { geometry in
-                Color.clear
-                    .onAppear {
-                        self.size = geometry.size
-                    }
-                    .onChange(of: geometry.size) { newValue in
-                        self.size = newValue
-                    }
-            }
-        }
+//        .background {
+//            GeometryReader { geometry in
+//                Color.clear
+//                    .onAppear {
+//                        self.size = geometry.size
+//                    }
+//                    .onChange(of: geometry.size) { newValue in
+//                        self.size = newValue
+//                    }
+//            }
+//        }
     }
 }
 #endif
