@@ -25,6 +25,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString{
         didSet{
+            print(nsAttributedString.length)
             isEmpty = nsAttributedString.length == 0
         }
     }

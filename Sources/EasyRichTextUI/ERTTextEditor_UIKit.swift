@@ -107,7 +107,8 @@ public struct ERTTextEditor<RichText: ERTRichText>: View {
         ERTTextEditorRaw(
             editContext: editContext,
             customize: customize,
-            maxLayoutWidth: width
+            maxLayoutWidth: width,
+            alignment: alignment
         )
 //        .background {
 //            GeometryReader { geometry in
