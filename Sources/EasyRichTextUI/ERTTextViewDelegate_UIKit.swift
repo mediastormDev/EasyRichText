@@ -36,6 +36,8 @@ public class ERTTextViewDelegate<RichText: ERTRichText>: NSObject, UITextViewDel
         print("ERTTextViewDelegate textViewDidChange textView = \(textView)")
         if let attributedText = textView.attributedText {
             print("ERTTextViewDelegate textViewDidChange attributedText = \(attributedText)")
+            context.isEmpty = attributedText.length == 0
+            print("ERTTextViewDelegate textViewDidChange isEmpty = \(context.isEmpty)")
             context.nsAttributedString = NSMutableAttributedString(attributedString: attributedText)
         }
         textView.invalidateIntrinsicContentSize()

@@ -23,12 +23,8 @@ import SwiftUI
 public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
-    var nsAttributedString: NSMutableAttributedString{
-        didSet{
-            isEmpty = nsAttributedString.length == 0
-        }
-    }
-    @Published var isEmpty: Bool = true
+    var nsAttributedString: NSMutableAttributedString
+    @Published var isEmpty: Bool
     @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
@@ -74,6 +70,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             defaultFont: defaultFont,
             attributedStringBridge: attributedStringBridge
         )
+        self.isEmpty = richText.segments.isEmpty
     }
 
     func updateSelectedRange(_ range: NSRange?) {
