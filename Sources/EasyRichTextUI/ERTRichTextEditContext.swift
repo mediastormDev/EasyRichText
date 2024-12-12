@@ -25,9 +25,10 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString{
         didSet{
-            checkEmpty?(nsAttributedString.length == 0)
+            isEmpty = nsAttributedString.length == 0
         }
     }
+    @Published var isEmpty: Bool = true
     @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
@@ -42,7 +43,6 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     var onTextUpdated: ((NSAttributedString) -> ())?
     public var onEndEditing: (() -> ())?
     public var onSelectedAttributes: (([NSAttributedString.Key: Any]) -> Void)?
-    public var checkEmpty: ((Bool) -> Void)?
     
     let italicSynthesizer: ERTItalicSynthesizer?
     let attributedStringBridge: ERTAttributedStringBridge

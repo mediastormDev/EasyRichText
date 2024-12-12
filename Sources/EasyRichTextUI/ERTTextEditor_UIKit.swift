@@ -96,11 +96,14 @@ public struct ERTTextEditor<RichText: ERTRichText>: View {
     
     var alignment: NSTextAlignment
     
-    public init(editContext: ERTRichTextEditContext<RichText>, width: CGFloat, alignment: NSTextAlignment = .center, customize: ((UITextView) -> ())? = nil) {
+    var showPlaceholder: Bool
+    
+    public init(editContext: ERTRichTextEditContext<RichText>, width: CGFloat, alignment: NSTextAlignment = .center, showPlaceholder: Bool = false, customize: ((UITextView) -> ())? = nil) {
         self.editContext = editContext
         self.customize = customize
         self.alignment = alignment
         self.width = width
+        self.showPlaceholder = showPlaceholder
     }
     
     public var body: some View {
@@ -110,6 +113,16 @@ public struct ERTTextEditor<RichText: ERTRichText>: View {
             maxLayoutWidth: width,
             alignment: alignment
         )
+        .background{
+            if editContext.isEmpty, showPlaceholder {
+                HStack{
+                    Text("无内容")
+                        .font(.footnote)
+                        .foregroundColor(Color.secondary)
+                    Spacer()
+                }
+            }
+        }
 //        .background {
 //            GeometryReader { geometry in
 //                Color.clear
