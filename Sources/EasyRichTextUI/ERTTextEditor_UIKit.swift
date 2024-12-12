@@ -32,11 +32,13 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
     @ObservedObject public var editContext: ERTRichTextEditContext<RichText>
     var customize: ((UITextView) -> ())?
     var maxLayoutWidth: CGFloat
+    var alignment: NSTextAlignment
 
-    init(editContext: ERTRichTextEditContext<RichText>, customize: ((UITextView) -> ())? = nil, maxLayoutWidth: CGFloat) {
+    init(editContext: ERTRichTextEditContext<RichText>, customize: ((UITextView) -> ())? = nil, maxLayoutWidth: CGFloat, alignment: NSTextAlignment = .center) {
         self.editContext = editContext
         self.customize = customize
         self.maxLayoutWidth = maxLayoutWidth
+        self.alignment = alignment
     }
 
     func makeCoordinator() -> ERTTextViewDelegate<RichText> {
@@ -50,7 +52,7 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
             let selection = textView.selectedTextRange
             textView.attributedText = newText
             textView.selectedTextRange = selection
-            textView.textAlignment = .center
+            textView.textAlignment = alignment
         }
 
         textView.attributedText = editContext.nsAttributedString
@@ -89,19 +91,30 @@ private struct ERTTextEditorRaw<RichText: ERTRichText>: UIViewRepresentable {
 public struct ERTTextEditor<RichText: ERTRichText>: View {
     @ObservedObject public var editContext: ERTRichTextEditContext<RichText>
     var customize: ((UITextView) -> ())?
-
+    
+    @State private var size: CGSize = .zero
+    
     public init(editContext: ERTRichTextEditContext<RichText>, customize: ((UITextView) -> ())? = nil) {
         self.editContext = editContext
         self.customize = customize
     }
-
+    
     public var body: some View {
-        GeometryReader { geometry in
-            ERTTextEditorRaw(
-                editContext: editContext,
-                customize: customize,
-                maxLayoutWidth: geometry.size.width - geometry.safeAreaInsets.leading - geometry.safeAreaInsets.trailing
-            )
+        ERTTextEditorRaw(
+            editContext: editContext,
+            customize: customize,
+            maxLayoutWidth: size.width
+        )
+        .background {
+            GeometryReader { geometry in
+                Color.clear
+                    .onAppear {
+                        self.size = geometry.size
+                    }
+                    .onChange(of: geometry.size) { newValue in
+                        self.size = newValue
+                    }
+            }
         }
     }
 }
