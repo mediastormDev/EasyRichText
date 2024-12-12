@@ -24,7 +24,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var richText: RichText
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString
-    @Published var isEmpty: Bool
+    @Published public var isEmpty: Bool
     @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
