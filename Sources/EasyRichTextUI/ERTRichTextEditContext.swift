@@ -25,11 +25,9 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     @Published public private(set) var selectedRange: NSRange?
     var nsAttributedString: NSMutableAttributedString{
         didSet{
-            print("length: \(nsAttributedString.length), isEmpy: \(nsAttributedString.length == 0)")
-            isEmpty = nsAttributedString.length == 0
+            checkEmpty?(nsAttributedString.length == 0)
         }
     }
-    @Published public var isEmpty: Bool = false
     @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
@@ -44,7 +42,8 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
     var onTextUpdated: ((NSAttributedString) -> ())?
     public var onEndEditing: (() -> ())?
     public var onSelectedAttributes: (([NSAttributedString.Key: Any]) -> Void)?
-
+    public var checkEmpty: ((Bool) -> Void)?
+    
     let italicSynthesizer: ERTItalicSynthesizer?
     let attributedStringBridge: ERTAttributedStringBridge
     let fontUtils: ERTFontUtils
@@ -75,7 +74,6 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             defaultFont: defaultFont,
             attributedStringBridge: attributedStringBridge
         )
-        self.isEmpty = richText.segments.isEmpty
     }
 
     func updateSelectedRange(_ range: NSRange?) {
