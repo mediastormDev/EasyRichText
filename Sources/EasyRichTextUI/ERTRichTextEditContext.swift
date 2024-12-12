@@ -28,7 +28,7 @@ public class ERTRichTextEditContext<RichText: ERTRichText>: ObservableObject {
             isEmpty = nsAttributedString.length == 0
         }
     }
-    @Published var isEmpty: Bool = false
+    @Published public var isEmpty: Bool = false
     @Published var selectedAttributes: [NSAttributedString.Key: Any] = [:]
     public var defaultFont: CTFont {
         didSet {
